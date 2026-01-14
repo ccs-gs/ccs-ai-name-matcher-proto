@@ -16,6 +16,12 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
     )
+    # Runtime switches
+    use_mock_llm: bool = True
+    mock_similarity_threshold: float = 0.85
+
+    # Optional: prompt file path (e.g prompts/buyer_match_v4.txt)
+    prompt_path: str = ""
 
     azure_openai_endpoint: str = ""
     azure_openai_key: str = ""
