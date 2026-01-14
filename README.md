@@ -37,7 +37,7 @@ ccs-ai-name-matcher-proto/
 └── README.md
 
 
-### Using Azure OpenAI
+### Using Azure OpenAI 
 
 To enable Azure OpenAI instead of the mock LLM, update in `env.example.txt` (or your `.env` file) with valid Azure OpenAI credentials:
 
@@ -48,18 +48,18 @@ AZURE_OPENAI_DEPLOYMENT_NAME=<your-deployment-name>
 AZURE_OPENAI_API_VERSION=2024-02-15-preview
 
 ## Running Locally
-### 1. Create and activate a virtual environment
+## 1. Create and activate a virtual environment
 
 bash
 python -m venv .venv
 
 windows-    .\.venv\Scripts\Activate.ps1
 
-### 2. Install dependencies
+## 2. Install dependencies
 pip install -r requirements.txt
-### 3. configure env variables
+## 3. configure env variables
 cp env.example.txt .env
-### 4.Run this service
+## 4.Run this service
 
 ```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
@@ -72,16 +72,16 @@ python app.py
 
 
 ## API Endpoints
-### Health check
-**GET /health**
+## Health check
+GET /health
 
 Used to verify the service is running.
 
 ```bash
 curl http://127.0.0.1:8000/health
 
-### Name matching
-**GET /match**
+## Name matching
+GET /match
 ```bash
 curl "http://127.0.0.1:8000/match?input_string=Home%20Ofice&candidates=Home%20Office&candidates=HMRC"
 
