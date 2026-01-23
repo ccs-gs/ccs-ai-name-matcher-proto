@@ -7,6 +7,7 @@ This service is intended to be reusable across CCS projects and supports both:
 - **Mock LLM logic** for local development and testing without external dependencies
 
 ## Overview
+
 The service exposes a simple HTTP API that:
 1. Accepts an `input_string`
 2. Accepts a list of `candidates`
@@ -18,6 +19,8 @@ The core logic is intentionally minimal and modular so it can:
 - Switch between mock and Azure OpenAI with minimal changes
 
 ## Project Structure
+
+```
 ccs-ai-name-matcher-proto/
 │
 ├── app/
@@ -35,57 +38,71 @@ ccs-ai-name-matcher-proto/
 ├── requirements.txt 
 ├── app.py 
 └── README.md
+```
 
+## Installation
 
-### Using Azure OpenAI 
+### Python Environment
 
-To enable Azure OpenAI instead of the mock LLM, update in `env.example.txt` (or your `.env` file) with valid Azure OpenAI credentials:
+1. Create and activate a virtual environment
+```bash
+python -m venv .venv
+```
+2. Update pip
+```bash
+pip install --upgrade pip
+```
+3. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+## Environment Variables
+
+To enable Azure OpenAI instead of the mock LLM, first copy the example `env.example.txt` file into a new `.env` file
+
+```bash
+cp env.example.txt .env
+```
+
+Then update the `.env` file with valid Azure OpenAI credentials:
 
 ```env
 AZURE_OPENAI_ENDPOINT=https://<your-resource-name>.openai.azure.com/
 AZURE_OPENAI_KEY=<your-api-key>
 AZURE_OPENAI_DEPLOYMENT_NAME=<your-deployment-name>
 AZURE_OPENAI_API_VERSION=2024-02-15-preview
+```
 
 ## Running Locally
-## 1. Create and activate a virtual environment
 
-bash
-python -m venv .venv
-
-windows-    .\.venv\Scripts\Activate.ps1
-
-## 2. Install dependencies
-pip install -r requirements.txt
-## 3. configure env variables
-cp env.example.txt .env
-## 4.Run this service
+To run this service locally, you can either use uvicorn:
 
 ```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Or run via Python entrypoint (still uses uvicorn under the hood):
+Or run via Python entrypoint (which still uses uvicorn under the hood):
 
 ```bash
 python app.py
-
+```
 
 ## API Endpoints
-## Health check
-GET /health
 
-Used to verify the service is running.
+Once the service is running (see above), there are 2 endpoints that you can call. For demo purposes, these can be called by issuing `curl` commands through the terminal, as shown below.
+
+### Health Check
+
+GET /health: used to verify the service is running.
 
 ```bash
 curl http://127.0.0.1:8000/health
+```
 
-## Name matching
-GET /match
+### Name Matching
+
+GET /match: used to send a name of interest and a string of potential matches
 ```bash
 curl "http://127.0.0.1:8000/match?input_string=Home%20Ofice&candidates=Home%20Office&candidates=HMRC"
-
-
-
-
-
+```
