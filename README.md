@@ -57,7 +57,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-## Environment Variables
+### Environment Variables
 
 To enable Azure OpenAI instead of the mock LLM, first copy the example `env.example.txt` file into a new `.env` file
 
@@ -74,7 +74,7 @@ AZURE_OPENAI_DEPLOYMENT_NAME=<your-deployment-name>
 AZURE_OPENAI_API_VERSION=2024-02-15-preview
 ```
 
-## Running Locally
+## Running the Service
 
 To run this service locally, you can either use uvicorn:
 
@@ -106,3 +106,12 @@ GET /match: used to send a name of interest and a string of potential matches
 ```bash
 curl "http://127.0.0.1:8000/match?input_string=Home%20Ofice&candidates=Home%20Office&candidates=HMRC"
 ```
+
+## Tests
+
+The following tests are in place to ensure that the service continues to work as expected:
+* known exact match
+* known fuzzy match
+* known non-match
+
+To run the tests... TBC
