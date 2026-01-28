@@ -17,6 +17,17 @@ def _load_prompt_text(prompt_path: str) -> str:
     return p.read_text(encoding="utf-8")
 
 
+def _remove_input_from_candidates(input_string: str, candidates: List[str]) -> List[str]:
+    """
+    Remove the input string from the candidate options (exact match).
+
+    Why: if multiple suppliers use the same *incorrect* buyer name, that incorrect name can
+    end up in the options list. If the input string is also present in the options, the LLM
+    may "match" the input to itself, preventing a correct match to the canonical buyer name.
+    """
+    return [c for c in candidates if c != input_string]
+
+
 def match_string_with_langchain(
     input_string: str,
     list_of_strings: List[str],
@@ -38,17 +49,19 @@ def match_string_with_langchain(
     settings = get_settings()
     effective_prompt_path = (prompt_path or settings.prompt_path or "").strip()
 
+    filtered_candidates = _remove_input_from_candidates(input_string, list_of_strings)
+
     if effective_prompt_path:
         prompt_template = _load_prompt_text(effective_prompt_path)
 
         # Prompt file should contain {input_name} and {candidates}
         system_prompt = prompt_template.format(
             input_name=input_string,
-            candidates=json.dumps(list_of_strings, ensure_ascii=False),
+            candidates=json.dumps(filtered_candidates, ensure_ascii=False),
         )
     else:
         system_prompt = (
-            f"Match the input string to one of these : {list_of_strings}. "
+            f"Match the input string to one of these : {filtered_candidates}. "
             f"If you can't find a match, return 'None'."
         )
 
