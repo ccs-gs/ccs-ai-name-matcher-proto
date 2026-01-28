@@ -34,7 +34,14 @@ ccs-ai-name-matcher-proto/
 ├── prompts/
 │ └── buyer_match_v*.txt # Prompt templates (versioned)
 │
+├── tests/
+│ ├── conftest.py # Test fixtures
+│ ├── test_api.py # API endpoint tests
+│ ├── test_mock_model.py # Mock model tests
+│ └── test_prompts.py # Prompt loading tests
+│
 ├── env.example.txt 
+├── pytest.ini
 ├── requirements.txt 
 ├── app.py 
 └── README.md
@@ -109,9 +116,29 @@ curl "http://127.0.0.1:8000/match?input_string=Home%20Ofice&candidates=Home%20Of
 
 ## Tests
 
-The following tests are in place to ensure that the service continues to work as expected:
-* known exact match
-* known fuzzy match
-* known non-match
+The test suite includes 24 automated tests which covers:
+* API endpoints (health check, GET/POST /match)
+* Input validation (empty strings, missing fields)
+* Matching behavior (exact match, fuzzy match, no match)
+* Case-insensitive matching
+* Custom prompt file loading
+* Mock model logic
+* Real-world UK procurement scenarios
 
-To run the tests... TBC
+To run the tests:
+
+```bash
+pytest
+```
+
+To run tests with verbose output:
+
+```bash
+pytest -v
+```
+
+To run a specific test file:
+
+```bash
+pytest tests/test_api.py
+```

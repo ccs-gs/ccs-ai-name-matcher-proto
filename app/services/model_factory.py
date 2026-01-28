@@ -32,7 +32,7 @@ def _get_azure_model_cached():
         openai_api_key=settings.azure_openai_key,
         azure_deployment=settings.azure_openai_deployment_name,
         openai_api_version=settings.azure_openai_api_version,
-        temperature=0.0,
+        temperature=1.0,
     )
 
 
